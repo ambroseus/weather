@@ -10,10 +10,12 @@ const inputSearch = document.querySelector('.search'),
 
 function getData() {
     let value = inputSearch.value;
+
     fetch(`${https}${value}${key}`)
         .then(res => res.json())
         .then(data => {
-            
+            const cityWeather = data.data;
+            getWeather(cityWeather);
         })
         .then(city => {
 
@@ -24,7 +26,17 @@ function getData() {
         .finally(() => {
 
         });
-   
+}
+function getWeather(data) {
+    data.forEach(data => {
+        const cityName = data.city_name,
+              cityList = document.createElement('li');
+            
+        wrapper.append(cityList);
+        cityList.classList.add('srch_city');
+        cityList.innerText = cityName;
+    });
+  
 }
 
 
