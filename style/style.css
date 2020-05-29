@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to top left, powderblue, pink);
+}
+.header {
+    width: 100%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.app_name {
+    font-family: 'Oxygen', sans-serif;
+    color: white;
+    font-size: xx-large;
+}
+
+.search {
+    width: 30vw;
+    height: 5vh;
+    padding: 1vw 1vh 1vw 1vh;
+    border-radius: 1vh;
+    border: none;
+    box-shadow: 0px 0px 10px 1px rgba(214, 158, 183, 0.39);
+    outline: none;
+}
+
+.wrapper {
+    border: 0px 1px 0px 1px solid black;
+    width: 30vw;
+    height: auto;
+    background: white;
+    box-shadow: 0px 0px 10px 1px rgba(214, 158, 183, 0.39);
+    border-radius: 1vh;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.srch_city {
+    border:1px solid black;
+    width: 30vw;
+    height: auto;
+}
+.srch_city:hover {
+    background-color: black;
+    color: white;
+}
+
+.main {
+    width: 100%;
+    height: 405px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.card {
+    width: 15%;
+    height: 48%;
+    position: relative;
+    border-radius: 1vh;
+    background: radial-gradient(40% 50%, #FAECD5, #CAE4D8);
+    box-shadow: 0px 0px 10px 1px rgba(92, 155, 206, 0.39);
+}
+.temp {
+    font-size: xx-large;
+    position: absolute;
+    right: 3%;
+    top: 40%;
+}
+.city {
+    position: absolute;
+    font-size: x-large;
+    position: absolute;
+    right: 10%;
+    top: 5%;
+}
+.img {
+    width: 8vw;
+    position: absolute;
+    left: 6%;
+    top: 20%;
+}
+.subs {
+    position: absolute;
+    bottom: 20%;
+    left: 20%;
+}
+
+.footer {
+    position: fixed;
+    bottom: 1px;
+    height: 4vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    
+}
