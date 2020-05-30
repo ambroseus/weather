@@ -1,70 +1,56 @@
 'use strict';
 window.addEventListener('DOMContentLoaded', () => {
 
+const searchInput = document.getElementById('search-input');
+const searchResult = document.getElementById('search-result');
 
-const inputSearch = document.querySelector('.search'),
-      main = document.querySelector('.main'),
-      https = 'https://api.weatherbit.io/v2.0/current?city=',
-      key = '&lang=ru&key=304b9c8efaa34b618a7ec269925f94da',
-      wrapper = document.querySelector('.wrapper');
+searchInput.addEventListener("input", getData);
+
+const key = '304b9c8efaa34b618a7ec269925f94da';
+const apiUrl = value => `https://api.weatherbit.io/v2.0/current?lang=ru&key=${key}&city=${value}`;
+const iconUrl = icon => `https://www.weatherbit.io/static/img/icons/${icon}.png`;
 
 
-function getData() {
-    let value = inputSearch.value;
-    fetch(`${https}${value}${key}`)
-        .then(res => res.json())
+function getData(event) {
+    const value = event.target.value || "";
+    if (value.length < 2) return; // do not call api if input less then 2 chars
+
+    fetch(apiUrl(value))
+        .then(res => {
+            if (res.status !== 200) {
+                return new Promise(resolve => resolve(res.statusText));
+            }
+            return res.json();
+        })
         .then(data => {
-            const cityWeather = data.data;
-            wrapper.innerHTML = '';
-            getWeather(cityWeather);
-        })
-        .then(city => {
-
-        })
-        .catch(() => {
-
-        })
-        .finally(() => {
-
-        });
-
-    
-}
-function getWeather(data) {
-    data.forEach(data => {
-        const cityName = data.city_name,
-              cityData = data,
-              cityList = document.createElement('li');
-        console.log(cityData);
-            
-        wrapper.append(cityList);
-        cityList.classList.add('srch_city');
-        cityList.innerText = cityName;
-        cityList.addEventListener('click', () => {
-            console.log('click');
-            main.innerHTML = `
-                <div class="card">
-                <p class="city">${data.city_name}/${data.country_code}</p>
-                <p class="temp">${data.temp}&degС</p>
-                <img class="img" src="img/clouds.png" alt="someImg">
-                <p class="subs">${data.weather.description}</p>
-                </div>
-            `;
-
-
-        });
-    });
-  
+            //if data is string then it contains error status text (res.status !== 200) 
+            if (typeof data === "string") { 
+                cityWeather(null, data);
+            }
+            else {
+                cityWeather(data.data[0]); // api response contains only 1 item in data array
+            }
+       }).catch(() => cityWeather(null, "Fetch error"))
 }
 
+function cityWeather(data, error) {
+    console.log(data);
+    if (error) {
+        searchResult.innerHTML = `<span class="error">${error}</span>`;
+        return;
+    }
+    const { city_name, country_code, temp, weather } = data;
+    const { icon, description } = weather;
 
+    const cityHtml = `<div class="city">${city_name} (${country_code})</div>`;
 
-inputSearch.addEventListener('input', getData);
+    const tempHtml = `<span class="temp">${temp}\u2103</span>`;
+    const descHtml = `<span class="description">${description}</span>`;
+    const iconHtml = `<img class="icon" src="${iconUrl(icon)}"/>`;
 
+    const weatherHtml = `<div class="weather">${tempHtml}${descHtml}${iconHtml}</div>`;
 
-
-
-
-
-    
+    searchResult.innerHTML = `${cityHtml}${weatherHtml}`;
+}
+ 
 });
